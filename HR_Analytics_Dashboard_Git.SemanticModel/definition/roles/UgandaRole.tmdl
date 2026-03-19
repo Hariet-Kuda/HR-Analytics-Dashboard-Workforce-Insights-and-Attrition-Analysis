@@ -1,0 +1,7 @@
+role UgandaRole
+	modelPermission: read
+
+	tablePermission HR_Data = [MonthlyRate] < 0
+
+	annotation PBI_Id = 82bdd32faef24186a6219c1a1a29839d
+

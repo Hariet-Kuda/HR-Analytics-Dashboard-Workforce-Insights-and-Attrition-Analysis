@@ -1,0 +1,12 @@
+relationship AutoDetected_04785c99-24e7-4ca7-9e82-b38bfce5e6c2
+	fromColumn: HR_Data.JobID
+	toColumn: Jobs.Job_ID
+
+relationship AutoDetected_a0de3875-3b15-4d61-b407-773920c0df2c
+	fromColumn: HR_Data.Department
+	toColumn: Departments.Department_ID
+
+relationship AutoDetected_58420154-b337-44ee-8983-9ca46b1d9eec
+	fromColumn: HR_Data.Education
+	toColumn: Education.Education_ID
+

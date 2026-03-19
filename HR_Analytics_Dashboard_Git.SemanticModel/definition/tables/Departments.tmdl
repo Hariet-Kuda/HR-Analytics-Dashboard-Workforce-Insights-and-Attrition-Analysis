@@ -1,0 +1,38 @@
+table Departments
+	lineageTag: 00a4626a-1786-4283-a5c0-0584b456bade
+
+	measure Attrition_Rate = DIVIDE(SUM(HR_Data[Attrition_Count]), sum(HR_Data[EmployeeCount]), 0)
+		lineageTag: b472add3-1e7d-448f-a3ec-2ffa9516cc02
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Department_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: eddbc50d-ba45-443f-b0fe-303083266356
+		summarizeBy: none
+		sourceColumn: Department_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Department
+		dataType: string
+		lineageTag: 1559f32b-a62e-4837-9967-4c15e69e8055
+		summarizeBy: none
+		sourceColumn: Department
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Departments = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\User\OneDrive\Desktop\Power BI Tutorials\Final Project\HR_Data.xlsx"), null, true),
+				    Departments_Sheet = Source{[Item="Departments",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Departments_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Department_ID", Int64.Type}, {"Department", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

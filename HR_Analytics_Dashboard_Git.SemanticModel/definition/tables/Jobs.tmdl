@@ -1,0 +1,33 @@
+table Jobs
+	lineageTag: 394c744d-901e-4fd2-a587-7197f838ff0d
+
+	column Job_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: 7355ed6a-979d-469c-b3de-b28961ea6753
+		summarizeBy: none
+		sourceColumn: Job_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column JobRole
+		dataType: string
+		lineageTag: 52443833-bcac-45ca-8c35-e7196c592cc5
+		summarizeBy: none
+		sourceColumn: JobRole
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Jobs = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\User\OneDrive\Desktop\Power BI Tutorials\Final Project\HR_Data.xlsx"), null, true),
+				    Jobs_Sheet = Source{[Item="Jobs",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Jobs_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Job_ID", Int64.Type}, {"JobRole", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

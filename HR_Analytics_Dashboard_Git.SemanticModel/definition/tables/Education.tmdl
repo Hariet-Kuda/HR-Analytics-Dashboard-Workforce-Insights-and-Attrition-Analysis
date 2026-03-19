@@ -1,0 +1,33 @@
+table Education
+	lineageTag: 4f09aebb-656a-485c-8d0d-ebffe97a3cd2
+
+	column Education_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: e9dbcaaa-853b-4f61-bf5f-d5eaef84b305
+		summarizeBy: none
+		sourceColumn: Education_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Education
+		dataType: string
+		lineageTag: 95a65308-f665-4420-a27d-98fe190ed5a4
+		summarizeBy: none
+		sourceColumn: Education
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Education = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\Users\User\OneDrive\Desktop\Power BI Tutorials\Final Project\HR_Data.xlsx"), null, true),
+				    Education_Sheet = Source{[Item="Education",Kind="Sheet"]}[Data],
+				    #"Promoted Headers" = Table.PromoteHeaders(Education_Sheet, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Education_ID", Int64.Type}, {"Education", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
